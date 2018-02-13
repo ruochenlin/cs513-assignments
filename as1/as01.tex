@@ -5,7 +5,7 @@
 \usepackage{mathtools}
 \usepackage{commath}
 \usepackage{setspace}
-
+% \setmonofont{hack}
 \begin{document}
 \maketitle
 \section{}
@@ -15,15 +15,16 @@ From linear algebra, we know that to apply a column operation on $B$, we can mul
 With this in mind, we can write out the matrices corresponding to operations 1 through 7. Note that matrices corresponding to row operations are denoted with $A_i$, and column operations $C_i$.
 $$C_1=\begin{bmatrix} 2\\&1\\&&1\\&&&1\end{bmatrix} $$
 $$A_2=\begin{bmatrix} 1\\&1\\& &\frac12\\&&&1\end{bmatrix}$$
-$$A_3=\begin{bmatrix} 1&&1&\\&1\\&&1\\&&&1\end{bmatrix} $$
-$$C_4=\begin{bmatrix} &&&1\\&1\\&&1\\1\end{bmatrix} $$
-$$A_5=\begin{bmatrix} 1&-1\\&1\\&-1\\&-1&1\end{bmatrix} $$
-$$C_6=\begin{bmatrix} 1\\&1\\&&1\\&&1&\end{bmatrix}$$
+$$A_3=\begin{bmatrix} 1&0&1&0\\0&1&0&0\\0&0&1&0\\0&0&0&1\end{bmatrix} $$
+$$C_4=\begin{bmatrix} 0&0&0&1\\0&1&0&0\\0&0&1&0\\1&0&0&0\end{bmatrix} $$
+$$A_5=\begin{bmatrix} 1&-1&0&0\\0&1&0&0\\0&-1&1&0\\0&-1&0&1\end{bmatrix} $$
+$$C_6=\begin{bmatrix} 1&0&0&0\\0&1&0&0\\0&0&1&1\\0&0&0&0\end{bmatrix}$$
 $$C_7=\begin{bmatrix} 0&0&0\\1&0&0\\0&1&0\\0&0&1\end{bmatrix} $$
 And the resulting matrix is $A_5A_3A_2BC_1C_4C_6C_7$. 
 \subsubsection{}
-$$A=\begin{bmatrix} 1&-1&\frac12&0\\0&1&0&0\\0&-1&\frac12&0\\0&0&0&1\end{bmatrix} $$
-$$C=\begin{bmatrix} 0&0&0\\1&0&0\\0&1&1\\0&0&0\end{bmatrix} $$
+$$A=A_5A_3A_2=\begin{bmatrix} 1&-1&\frac12&0\\0&1&0&0\\0&-1&\frac12&0\\0&-1&0&1\end{bmatrix} $$
+$$C=C_1C_4C_6C_7=\begin{bmatrix} 0&0&0\\1&0&0\\0&1&1\\0&0&0\end{bmatrix} $$
+See Appendix A for Matlab code that verifies the results above.
 \subsection{}
 Since A is Hermitian, $A=A'$, where $A'$ refers to the adjoint of $A$. Suppose $x\in\mathbb{R}^m$ is an eigenvector of $A$ with eigenvalue $\lambda$: i.e. $Ax=\lambda x$. On one hand, $$(x,Ax)=(x, \lambda x) = \lambda(x,x);$$ on the other, $$(x,Ax)=(A'x, x)=(Ax,x)=(\lambda x,x)=\lambda^*(x,x).$$ Since $\lambda(x,x)=\lambda^*(x,x)$ and $x\neq0$, we know $\lambda=\lambda^*$, and hence all eigenvalues of $A$ are real.  \\[0.5cm]
 If $Ax=\lambda_xx$ and $Ay=\lambda_yy$, $\lambda_x\neq\lambda_y$, then $(x,Ay) = \lambda_y(x,y)$ and $(x,Ay)=(A'x,y)=(Ax,y)=\lambda_x(x,y)$. Since $\lambda_x\neq\lambda_y$, $(x,y)=0$. 
@@ -34,5 +35,87 @@ We know that $\norm{Qx}_2=\norm{x}_2\Leftrightarrow(Qx,Qx)=(x,x)$. In addition, 
 Write $Q$ as $\begin{bmatrix} q_1 & q_2 & \dots &q_m\end{bmatrix}$, then $$Q'Q=\begin{bmatrix} q_1'\\q_2'\\\vdots\\q_m'\end{bmatrix}\begin{bmatrix} q_1&q_2&\dots&q_m\end{bmatrix}; $$ $(Q'Q)_{ij}=(q_i,q_j)$, $(Q'Q)_{ji}=(q_j,q_i)=(q_i,q_j)=(Q'Q)_{ij}$. Hence $Q'Q$ is symmetric.\\[0.5cm]
 Since $Q'Q$ is real and symmetric, it can be written as $Q'Q=P\Lambda P'$, with $P$ being orthogonal and $\Lambda$ diagonal with eigenvalues of $Q$ as its entries. In addition, we've proved $1$ is the only eigenvalue of $Q'Q$; so $\Lambda=I$ in this particular case. Insert this into the decomposed form of $Q'Q$, we have $Q'Q=PIP'=PP'=I$. In other words, $Q^{-1}=Q'$; hence we proved $Q$ is orthogonal.
 \section{}
+The matrix multiplication at the end of the for loop in sloppy\_qr.m is the most tedious computation in the loop, and it is $O(n^3)$. In addition, the for loop runs from $1$ through $n$; thus we would expect $O(n^4)$ complexity from the "sloppy" implementation of QR-factorization.\\[0.5cm] 
+With this in mind, the sloppy\_qr.m code was tweaked to count the operations needed for different $n$s. For each $n=10,20,\dots,100$, we generated a square matrix that has random entries. The number of operations needed to QR=factorize the matrix is counted for each $n$. Fitting the number of operations versus $n$, we have the following expression: 
+$$\mathrm{Complexity(}n\mathrm{)}=2n^4-0.00649n^3+3.407n^2-9.458n+58.33.$$
+The modified version of code and raw data can be found in Appendix B and C.
 
+\newpage
+\appendix{}
+\section{Matlab Code to Verify Results in Problem 1}
+\texttt
+{C1=[2 0 0 0; 0 1 0 0; 0 0 1 0; 0 0 0 1];\\
+A2=[1 0 0 0; 0 1 0 0; 0 0 1/2 0; 0 0 0 1];\\
+A3=[1 0 1 0; 0 1 0 0; 0 0 1 0; 0 0 0 1];\\
+C4=[0 0 0 1; 0 1 0 0; 0 0 1 0; 1 0 0 0];\\
+A5=[1 -1 0 0; 0 1 0 0; 0 -1 1 0; 0 -1 0 1];\\
+C6=[1 0 0 0; 0 1 0 0; 0 0 1 1; 0 0 0 0];\\
+C7=[0 0 0; 1 0 0; 0 1 0; 0 0 1];\\
+A=A5*A3*A2;\\
+C=C1*C4*C6*C7;\\}
+And the results was:\\ 
+\texttt
+{A =\\
+\\    1.0000   -1.0000    0.5000         0\\
+         0    1.0000         0         0\\
+         0   -1.0000    0.5000         0\\
+         0   -1.0000         0    1.0000\\}
+and \\
+\texttt
+{C =\\
+\\  
+     0     0     0\\
+     1     0     0\\
+     0     1     1\\
+     0     0     0}, \\
+hence verifying our results in problem 1.
+\newpage
+\section{Matlab Code for Problem 3}
+\texttt
+{count=zeros(1,10)\\
+for j=1:10,\\
+	 dim=j*10;\\
+     A=zeros(dim,dim);\\
+     for a=1:dim,\\
+         for b=1:dim,\\
+             A(a,b)=100*rand();\\
+         end\\
+     end\\}
+     \texttt{[m,n}\texttt{]=size(A);\\
+     R=A;\\
+     Q=eye(m);\\
+     for i=1:n,\\
+        x=R(:,i);\\
+        a=norm(x(i:m),2);\\
+        count(1,j)=count(1,j)+n;\\
+        y=[x(1:i-1)' a zeros(1,m-i)]';\\
+        w=x-y;\\
+        count(1,j) = count(1,j)+n;\\
+        if norm(w)~=0,\\
+           w=w/norm(w);\\
+         count(1,j) = count(1,j)+n;\\
+        end\\
+        H=eye(m)-2*w*w';\\
+        Q=Q*H; R=H*R;\\
+        count(1,j) = count(1,j)+2*n\^{}3;\\
+     end\\
+     \% norm(A-Q*R), norm(eye(m)-Q'*Q)\\
+ end\\
+ complexity=fit(linspace(10,100,10)',count', 'poly4');\\}\\
+I apologize for the (lack of) indentation; I've tried (and obviously failed) to get the correct indentation with fixed-width fonts in  LaTex.
+\section{}
+The results of the code in Problem 3 yields the following output:\\
+\texttt
+{count = \\
+20290      321200     1622700     5124800    12507450    25930800    48034700    81939120   131244210   200030000}\\\\
+\texttt{
+     Linear model Poly4:\\
+     complexity(x) = p1*x\^{}4 + p2*x\^{}3 + p3*x\^{}2 + p4*x + p5\\
+     Coefficients (with 95\% confidence bounds):\\
+       p1 =           2  (2, 2)\\
+       p2 =    -0.00649  (-0.02165, 0.008673)\\
+       p3 =       3.407  (2.272, 4.542)\\
+       p4 =      -9.458  (-42.22, 23.31)\\
+       p5 =       58.33  (-232.4, 349)}\\
+%\\}
 \end{document}
