@@ -27,10 +27,10 @@ $$C=C_1C_4C_6C_7=\begin{bmatrix} 0&0&0\\1&0&0\\0&1&1\\0&0&0\end{bmatrix} $$
 See Appendix A for Matlab code that verifies the results above.
 \subsection{}
 Since A is Hermitian, $A=A'$, where $A'$ refers to the adjoint of $A$. Suppose $x\in\mathbb{R}^m$ is an eigenvector of $A$ with eigenvalue $\lambda$: i.e. $Ax=\lambda x$. On one hand, $$(x,Ax)=(x, \lambda x) = \lambda(x,x);$$ on the other, $$(x,Ax)=(A'x, x)=(Ax,x)=(\lambda x,x)=\lambda^*(x,x).$$ Since $\lambda(x,x)=\lambda^*(x,x)$ and $x\neq0$, we know $\lambda=\lambda^*$, and hence all eigenvalues of $A$ are real.  \\[0.5cm]
-If $Ax=\lambda_xx$ and $Ay=\lambda_yy$, $\lambda_x\neq\lambda_y$, then $(x,Ay) = \lambda_y(x,y)$ and $(x,Ay)=(A'x,y)=(Ax,y)=\lambda_x(x,y)$. Since $\lambda_x\neq\lambda_y$, $(x,y)=0$. 
+If $Ax=\lambda_xx$ and $Ay=\lambda_yy$, $\lambda_x\neq\lambda_y$, then $(x,Ay) = \lambda_y(x,y)$ and $(x,Ay)=(A'x,y)=(Ax,y)=\lambda_x(x,y)$. Since $\lambda_x\neq\lambda_y$, $(x,y)=0$. This is to say that eigenvectors of the same matrix that correspond to different eigenvalues are orthogonal. 
 \section{}
 \subsection{}
-We know that $\norm{Qx}_2=\norm{x}_2\Leftrightarrow(Qx,Qx)=(x,x)$. In addition, $(Qx, Qx)=(x,Q'Qx)$. Suppose $x$ is an eigenvector of $Q'Q$ with eigenvalue $\lambda$, then $(x,Q'Qx)=(x,\lambda x=\lambda(x,x)$, and hence $\lambda(x,x)=(x,x)$. Since $x\neq0$, we know that $\lambda=1,\,\forall\lambda\in\sigma(Q'Q)$.
+We know that $\norm{Qx}_2=\norm{x}_2\Leftrightarrow(Qx,Qx)=(x,x)$. In addition, $(Qx, Qx)=(x,Q'Qx)$. Suppose $x$ is an eigenvector of $Q'Q$ with eigenvalue $\lambda$, then $(x,Q'Qx)=(x,\lambda x)=\lambda(x,x)$, and hence $\lambda(x,x)=(x,x)$. Since $x\neq0$, we know that $\lambda=1,\,\forall\lambda\in\sigma(Q'Q)$.
 \subsection{}
 Write $Q$ as $\begin{bmatrix} q_1 & q_2 & \dots &q_m\end{bmatrix}$, then $$Q'Q=\begin{bmatrix} q_1'\\q_2'\\\vdots\\q_m'\end{bmatrix}\begin{bmatrix} q_1&q_2&\dots&q_m\end{bmatrix}; $$ $(Q'Q)_{ij}=(q_i,q_j)$, $(Q'Q)_{ji}=(q_j,q_i)=(q_i,q_j)=(Q'Q)_{ij}$. Hence $Q'Q$ is symmetric.\\[0.5cm]
 Since $Q'Q$ is real and symmetric, it can be written as $Q'Q=P\Lambda P'$, with $P$ being orthogonal and $\Lambda$ diagonal with eigenvalues of $Q$ as its entries. In addition, we've proved $1$ is the only eigenvalue of $Q'Q$; so $\Lambda=I$ in this particular case. Insert this into the decomposed form of $Q'Q$, we have $Q'Q=PIP'=PP'=I$. In other words, $Q^{-1}=Q'$; hence we proved $Q$ is orthogonal.
@@ -38,7 +38,7 @@ Since $Q'Q$ is real and symmetric, it can be written as $Q'Q=P\Lambda P'$, with 
 The matrix multiplication at the end of the for loop in sloppy\_qr.m is the most tedious computation in the loop, and it is $O(n^3)$. In addition, the for loop runs from $1$ through $n$; thus we would expect $O(n^4)$ complexity from the "sloppy" implementation of QR-factorization.\\[0.5cm] 
 With this in mind, the sloppy\_qr.m code was tweaked to count the operations needed for different $n$s. For each $n=10,20,\dots,100$, we generated a square matrix that has random entries. The number of operations needed to QR=factorize the matrix is counted for each $n$. Fitting the number of operations versus $n$, we have the following expression: 
 $$\mathrm{Complexity(}n\mathrm{)}=2n^4-0.00649n^3+3.407n^2-9.458n+58.33.$$
-The modified version of code and raw data can be found in Appendix B and C.
+The modified version of code and raw data can be found in Appendix B and C. Note that the statements at the bottom of the original code was not taken into our consideration of computational complexity, since they are verification of our implementation QR-factorization, rather than part of the decomposition.
 
 \newpage
 \appendix{}
@@ -103,7 +103,7 @@ for j=1:10,\\
  end\\
  complexity=fit(linspace(10,100,10)',count', 'poly4');\\}\\
 I apologize for the (lack of) indentation; I've tried (and obviously failed) to get the correct indentation with fixed-width fonts in  LaTex.
-\section{}
+\section{Raw Output of Problem 3}
 The results of the code in Problem 3 yields the following output:\\
 \texttt
 {count = \\
