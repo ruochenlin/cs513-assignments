@@ -55,7 +55,9 @@ Av_2 &= \begin{bmatrix} 2 & -2 \\ 1 & 1\end{bmatrix}\begin{bmatrix} \frac{-\sqrt
 \end{split}\nonumber\end{equation} 
 Hence 
 \begin{equation}\begin{split} U = \begin{bmatrix} 0 & -1 \\ 1 & 0\end{bmatrix} \end{split}\nonumber\end{equation} and
-\begin{equation}\begin{split} A = U\Sigma V^T = U\Lambda^{\frac12}V^T\end{split}.\nonumber\end{equation}
+\begin{equation}\begin{split} A = U\Sigma V^T = U\Lambda^{\frac12}V^T\end{split},\nonumber\end{equation}
+where $\Sigma$ is defined as a diagonal matrix with diagonal entries $\Sigma_{ii} = \sigma_i$.\\[0.3cm]
+
 Indeed, we find that 
 \begin{equation}\begin{split} 
 AV &= \begin{bmatrix} 2 & -2\\1 & 1\end{bmatrix}\begin{bmatrix} \frac{\sqrt{2}}2 & -\frac{\sqrt{2}}2 \\ \frac{\sqrt{2}}2 & \frac{\sqrt{2}}2 \end{bmatrix} = 
@@ -69,11 +71,73 @@ A^TU &= \begin{bmatrix} 2 &1 \\ -2 & 1\end{bmatrix} \begin{bmatrix} 0 & -1\\1 & 
 \end{split}\nonumber\end{equation} 
 
 \section{}
-My finding this that:
+\subsection{}
+After playing around in \texttt{MATLAB}, (code can be found in Appendix B,) my finding is that \\[0.4cm] 
+\textbf{Theorem} Given a symmetric matrix $A$, $(\lambda, v)$ is an eigenpair of $A^TA=A^2$ if and only if $(\lambda^2, v)$ is an eigenpair of $A^T=A$. \\[0.4cm]
+\subsection{}
+\textit{Proof:}\\[0.4cm]
+If 
+\begin{equation}\begin{split} Av = \lambda v, \end{split}\nonumber\end{equation}
+then
+\begin{equation}\begin{split} A^2v=A(Av)=\lambda Av = \lambda^2v;\end{split}\nonumber\end{equation}
+in other words, $Av=\lambda v$ only if $A^2v = \lambda^2v$.\\[0.3cm]
+On the other hand, $A^2=A^TA$ is symmetric positive semidefinite, so it can be decomposed as
+\begin{equation}\begin{split} A^2 = Q\Lambda Q^T = (Q\Lambda^{\frac12}Q^T)(Q\Lambda^{\frac12}Q^T)\end{split},\nonumber\end{equation}
+with $Q$ being orthogonal
+% TODO: finish the proof.
+
+\subsection{}
+Since $$\norm{A}_2 = \sqrt{\max\sigma(A^TA)}$$ and $$\lambda_{A} = \pm\sqrt{\lambda_{A^TA}},$$ the $l_2$-norm of a real symmetric matrix $A$ is equal to the element in its spectrum with the largest absolute vaue, \textit{i.e.} $$\norm{A}_2 = \max_{\lambda}\abs{\lambda},\,\,\lambda\in\sigma(A).$$ 
+Apply this result to $$A = \begin{bmatrix} -8 & 144\\144 & -92\end{bmatrix}, $$ 
+whose eigenvalues are $$\lambda_1 = -200,\,\,\lambda_2 = 100,$$
+we predict the $l_2$-norm of $A$ to be 
+$$\norm{A}_2 = \max\{\abs{-200},\,\abs{100}\} = 200,$$
+which is indeed the $l_2$-norm of $A$. (Can be verified with \texttt{MATLAB}.)
+
+\subsection{}
+The theorem from preceeding parts does not hold for more general matrices; for example, given 
+\begin{equation}\begin{split} A &= \begin{bmatrix} 0 & -2 \\ 1 & 0\end{bmatrix},\\
+\sigma(A) &= \{-\sqrt{2} ,\, \sqrt{2} \};
+  \end{split}\nonumber\end{equation} 
+following the previous theorem we would predict that 
+$$\norm{A}_2 = \sqrt{2}. $$
+However, if we calculate the $l_2$-norm in the canonical way, we would find that 
+\begin{equation}\begin{split} \sigma(A^TA) &= \{1,\,4\},\\ 
+\norm{A}_2 &= \sqrt{4} = 2\\&\neq\sqrt{2},  
+\end{split}\nonumber\end{equation}
+which contradicts the theorem. 
+\subsection{}
+Following the discussion above, we can say that the sigular values of a symmetric matrix are equal to the absolute values of its eigenvalues.
+
+\section{}
+\subsection{}
+If $A$ is a non-singular matrix and $(\lambda, v)$ is one of its eigenpairs, \textit{i.e.}
+\begin{equation}\begin{split} Av = \lambda v, \end{split}\nonumber\end{equation} then 
+\begin{equation}\begin{split} A^{-1}Av &= (A^{-1}A)v = v \\ &= A^{-1}(Av) = \lambda A^{-1}v \end{split}\nonumber\end{equation}
+$$\Rightarrow A^{-1}v = \frac1{\lambda}v.$$
+In addition, $A$ is also the inverse of $A^{-1}$, so $A^{-1}v=\frac1{\lambda}v$ will lead to $Av = \lambda v$ as well. Hence we proved that $Av=\lambda v$ if and only if $A^{-1 }v = \frac1{\lambda}v$.
+
+\subsection{}
+Given that $A$ is non-singular, 
+$$\norm{A^{-1}}_2 =\frac1{\min\{\sigma\}},\,\sigma^2\in\sigma(A^TA).$$
+\textit{Proof:}\\[0.3cm]
+Given an SVD of $A$:
+$$A = U\Sigma V^T,$$ then
+$$A^{-1} = V\Sigma^{-1}U^T,$$
+where $(\Sigma^{-1})_{ij} = 0$ if $i\neq j$ and $(\Sigma^{-1})_{ii} = \frac1{\Sigma_{ii}}$.\\[0.3cm]
+It can easily be verified that $\Sigma^{-1}$ and $A^{-1}$ expressed as such are exactly the inverses of $\Sigma$ and $A$ respectively, and thus $\{\sigma_i = \Sigma_{ii}\}$ and $\{\sigma^{-1}_i = \Sigma^{-1}_{ii}\}$ are the sets of sigular values of $A$ and $A^{-1}$. The $l_2$-norm of $A^{-1}$ can be expressed as the following:
+$$\norm{A^{-1}}_2 = \max_{\sigma^{-1}}{\abs{\sigma^{-1}_i}} = \max_{\sigma_i}\frac1{\sigma_i}=\frac1{\min\{\sigma_i\}}.$$
+Consider both $\{\sigma\}$ and $\{\sigma_i\}$ represent the set of singular values of $A$, we've proved the theorem.
 
 
 \newpage
 \appendix{}
 \section{\texttt{MATLAB} code that verifies results in Problem 1}
 % TODO: matlab code to verify the results in problem 1
+
+\section{Evidence of the theorem in Problem 2}
+% TODO: provide evidence to the theorem
+
+
+
 \end{document}
