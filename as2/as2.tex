@@ -129,6 +129,91 @@ It can easily be verified that $\Sigma^{-1}$ and $A^{-1}$ expressed as such are 
 $$\norm{A^{-1}}_2 = \max_{\sigma^{-1}}{\abs{\sigma^{-1}_i}} = \max_{\sigma_i}\frac1{\sigma_i}=\frac1{\min\{\sigma_i\}}.$$
 Consider both $\{\sigma\}$ and $\{\sigma_i\}$ represent the set of singular values of $A$, we've proved the theorem.
 
+\section{}
+$$Z = \begin{bmatrix} 1 & 2 & 3 \\ 4 & 5 & 6\\ 7 & 8 & 7 \\ 4 & 2 & 3 \\ 4 & 2 & 2\end{bmatrix} $$
+Since $Z$ is a $5\times3$ rectangular matrix, it can be QR-decomposed into the product of a $5\times5$ orthogonal matrix $Q$ and a $5\times 3$ upper triangular matrix $R$: $$Z_{5\times3} = Q_{5\times5}R_{5\times3}.$$
+The $l_2$-norm (abbreviated as simply norm below) of the first column of $Z$, denoted as $x_1$, is $$\norm{x_1}_2 = \sqrt{1^2+4^2+7^2+4^2+4^2}=\sqrt{98} = 7 \sqrt{2}; $$ thus $$y_1 = \begin{bmatrix} 7\sqrt{2}\\0\\0\\0\\0\end{bmatrix},$$ $$ \norm{x_1-y_1} = \sqrt{196-14\sqrt{2}}\approx13.2741, $$ and $$w_1 = \frac{x_1-y_1}{\norm{x_1-y_1}} = \begin{bmatrix} \frac{1-7 \sqrt{2}}{\sqrt{196-14\sqrt{2}}} \\ \frac4{\sqrt{196-14\sqrt{2}}} \\ \frac7{\sqrt{196-14\sqrt{2}}} \\ \frac4{\sqrt{196-14\sqrt{2}}} \\ \frac4{\sqrt{196-14\sqrt{2}}}\end{bmatrix}\approx \begin{bmatrix} -0.6704 \\ 0.3013 \\ 0.5273 \\ 0.3013 \\ 0.3013\end{bmatrix}. $$
+We can construct the first Householder matrix as the following:
+\begin{equation}\begin{split} H_1 &= I - 2ww^T\\
+&\approx 
+\begin{bmatrix} 
+0.1010 & 0.4041 & 0.7071 & 0.4041 & 0.4041 \\ 
+0.4041 & 0.8184 & -0.3178 & -0.1816 & -0.1816 \\
+0.7071 & -0.3178 & 0.4438 & -0.3178 & -0.3178 \\
+0.4041 & -0.1816 & -0.3178 & 0.8184 & -0.1816 \\
+0.4041 & -0.1816 & -0.3178 & -0.1816 & 0,8184
+\end{bmatrix}  
+\end{split}\nonumber\end{equation} 
+Multiply $Z$ by $H_1$ on the left, we have:
+$$H_1Z \approx \begin{bmatrix} 
+9.8995 & 9.4954 & 9.6975 \\
+0 & 1.6311 & 2.9897 \\
+0 & 2.1044 & 1.7320 \\
+0 & -1.3689 & -0.0103 \\
+0 & -1.3689 & -1.0103
+\end{bmatrix} $$
+Following this strategy we have:
+\begin{equation}\begin{split} 
+x_2 &\approx 
+\begin{bmatrix} 
+9.4954 \\ 1.6311 \\ 2.1044 \\ -1.3689 \\  -1.3689
+\end{bmatrix},\,\,
+y_2 \approx \begin{bmatrix} 
+9.4954 \\ 3.2919 \\ 0\\ 0\\ 0
+\end{bmatrix},\,\,
+w_2 \approx \begin{bmatrix} 0 \\ -0.5023 \\ 0.6364 \\ -0.4140 \\ -0.4140\end{bmatrix},\\
+H_2 &= I - 2w_2w_2^T\\
+&\approx 
+\begin{bmatrix} 
+1 & 0 & 0 & 0 & 0 \\
+0 & 0.4955 & 0.6393 & -0.4158 & -0.4158 \\
+0 & 0.6393 & 0.1900 & 0.5269 & 0.5269 \\
+0 & -0.4158 & 0.5269 & 0.6572 & -0.3428 \\
+0 & -0.4158 & 0.5269 & -0.3428 & 0.6572
+\end{bmatrix},\\
+H_2H_1Z &\approx
+\begin{bmatrix} 9.8995 & 9.4952 & 9.6975 \\
+0 & 3.2919 & 3.0129 \\
+0 & 0 & 1.7026 \\
+0 & 0 & 0.0089 \\
+0 & 0 & -0.9911 
+\end{bmatrix} 
+\end{split}\nonumber\end{equation} 
+and that 
+\begin{equation}\begin{split} 
+x_3 &\approx
+\begin{bmatrix} 9.6975 \\ 3.0129 \\ 1.7026 \\ 0.0089 \\ -0.9911\end{bmatrix},\,\,
+y_3 \approx \begin{bmatrix} 
+9.6975 \\ 3.0129 \\ 1.9701 \\ 0 \\ 0
+\end{bmatrix},\,\,
+w_3 \approx \begin{bmatrix} 0 \\ 0 \\ -0.2606 \\ 0.0086 \\ -0.9654\end{bmatrix}, \\
+H_3 &= I - 2w_3w_3^T \approx 
+\begin{bmatrix} 
+1 & 0 & 0 & 0 & 0\\
+0 & 1 & 0 & 0 & 0 \\
+0 & 0 & 0.8642 & 0.0045 & -0.5031 \\
+0 & 0 & 0.0045 & 0.9999 & 0.0167 \\
+0 & 0 & -0.5031 & 0.0167 & -0.8641
+\end{bmatrix},\\
+R &= H_3H_2 H_1Z \approx
+\begin{bmatrix} 
+9.8995 & 9.4954 & 9.6975 \\
+0 & 3.2919 & 3.0129 \\
+0 & 0 & 1.9701 \\
+0 & 0 & 0\\
+0 & 0 & 0
+\end{bmatrix},\\
+Q &= (H_3H_2H_1)^T = H_1^TH_2^TH_3^T\\
+&\approx
+\begin{bmatrix} 
+0.1010 & 0.3162 & 0.5420 & 0.3408 & -0.6928 \\
+0.4041 & 0.3534 & 0.5162 & -0.5730 & 0.3422\\
+0.7071 & 0.3906 & -0.5248 & 0.2684 & 0.0028\\
+0.0041 & -0.5580 & 0.3871 & 0.5006 & 0.3534\\
+0.4041 & -0.5580 & -0.1204 & -0.4825 & -0.5273
+\end{bmatrix}.
+\end{split}\nonumber\end{equation} 
+And we find that $Z = QR$, just as expected.
 
 \newpage
 \appendix{}
