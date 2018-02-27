@@ -57,7 +57,6 @@ Hence
 \begin{equation}\begin{split} U = \begin{bmatrix} 0 & -1 \\ 1 & 0\end{bmatrix} \end{split}\nonumber\end{equation} and
 \begin{equation}\begin{split} A = U\Sigma V^T = U\Lambda^{\frac12}V^T\end{split},\nonumber\end{equation}
 where $\Sigma$ is defined as a diagonal matrix with diagonal entries $\Sigma_{ii} = \sigma_i$.\\[0.3cm]
-
 Indeed, we find that 
 \begin{equation}\begin{split} 
 AV &= \begin{bmatrix} 2 & -2\\1 & 1\end{bmatrix}\begin{bmatrix} \frac{\sqrt{2}}2 & -\frac{\sqrt{2}}2 \\ \frac{\sqrt{2}}2 & \frac{\sqrt{2}}2 \end{bmatrix} = 
@@ -73,18 +72,22 @@ A^TU &= \begin{bmatrix} 2 &1 \\ -2 & 1\end{bmatrix} \begin{bmatrix} 0 & -1\\1 & 
 \section{}
 \subsection{}
 After playing around in \texttt{MATLAB}, (code can be found in Appendix B,) my finding is that \\[0.4cm] 
-\textbf{Theorem} Given a symmetric matrix $A$, $(\lambda, v)$ is an eigenpair of $A^TA=A^2$ if and only if $(\lambda^2, v)$ is an eigenpair of $A^T=A$. \\[0.4cm]
+\textbf{Theorem} Given a symmetric matrix $A$, $(\lambda, v)$ or $(-\lambda, v)$ is an eigenpair of $A^TA=A^2$ if and only if $(\lambda^2, v)$ is an eigenpair of $A^T=A$.\\[0.3cm]
+We might be tempted to state a stronger form of the theorem, \textit{i.e.} $(\lambda,v)$ is an eigenpair of $A$ if and only if $(\lambda^2,v)$ is one for $A^2$. However, if we set $\lambda = 2$ and $$A = \begin{bmatrix} 1 & 0 \\ 0 & -2\end{bmatrix},$$
+then apparently $(\lambda^2=4,\begin{bmatrix} 0 & 1\end{bmatrix}^T)$ is an eigenpair of $$A^2 = \begin{bmatrix} 1 &0\\0 &4\end{bmatrix}; $$ however, $\lambda=2$ is not an eigevalue of $A$, and thus the `if' part of the stronger form of the theorem is false. We hence have to live with the more `verbose' version of the theorem.
 \subsection{}
 \textit{Proof:}\\[0.4cm]
 If 
-\begin{equation}\begin{split} Av = \lambda v, \end{split}\nonumber\end{equation}
+\begin{equation}\begin{split} Av = \lambda v \,\, \text{or}\,\, Av = -\lambda v , \end{split}\nonumber\end{equation}
 then
-\begin{equation}\begin{split} A^2v=A(Av)=\lambda Av = \lambda^2v;\end{split}\nonumber\end{equation}
-in other words, $Av=\lambda v$ only if $A^2v = \lambda^2v$.\\[0.3cm]
-On the other hand, $A^2=A^TA$ is symmetric positive semidefinite, so it can be decomposed as
-\begin{equation}\begin{split} A^2 = Q\Lambda Q^T = (Q\Lambda^{\frac12}Q^T)(Q\Lambda^{\frac12}Q^T)\end{split},\nonumber\end{equation}
-with $Q$ being orthogonal
-% TODO: finish the proof.
+\begin{equation}\begin{split} A^2v=A(Av)=\pm \lambda Av = \lambda^2v;\end{split}\nonumber\end{equation}
+in other words, $Av=\lambda v$ or $Av=-\lambda v$ only if $A^2v = \lambda^2v$.\\[0.3cm]
+To prove the `if' part, since $A$ is symmetric, it can be decomposed as the following:
+\begin{equation}\begin{split} A = Q\Lambda Q^T\end{split}\nonumber\end{equation}
+with $\Lambda$ being a digonal matrix constructed from the eigenvalues of $A$ and $Q$ being orthogonal. We can also express $A^2$ in terms of $\Lambda$ and $Q$:
+$$A^2 = AA = (Q\Lambda Q^T)(Q\Lambda Q^T) = Q\Lambda^2 Q^T.$$
+We recognise that the equation above happens to be the Schur decomposition of $A^2$, because $\Lambda^2$ is also diagonal. If $\lambda^2$ is one of the eigenvalues of $A^2$, then it must be one of the diagonal terms of $\Lambda^2$, say $\lambda^2 = (\Lambda^2)_{ii} = (\Lambda_{ii})^2$, $$\Rightarrow\Lambda_{ii}= \pm\lambda. $$
+This is to say that, if $\lambda^2$ is the eigenvalue of $A^2$ that corresponds to the eigenvector of $q_i$, then either $\lambda$ or $-\lambda$ must also be the eigenvalue of $A$ that corresponds to eigenvector $q_i$. Hence we finished the `if' part of proof.
 
 \subsection{}
 Since $$\norm{A}_2 = \sqrt{\max\sigma(A^TA)}$$ and $$\lambda_{A} = \pm\sqrt{\lambda_{A^TA}},$$ the $l_2$-norm of a real symmetric matrix $A$ is equal to the element in its spectrum with the largest absolute vaue, \textit{i.e.} $$\norm{A}_2 = \max_{\lambda}\abs{\lambda},\,\,\lambda\in\sigma(A).$$ 
@@ -119,14 +122,17 @@ In addition, $A$ is also the inverse of $A^{-1}$, so $A^{-1}v=\frac1{\lambda}v$ 
 
 \subsection{}
 Given that $A$ is non-singular, 
-$$\norm{A^{-1}}_2 =\frac1{\min\{\sigma\}},\,\sigma^2\in\sigma(A^TA).$$
+$$\norm{A^{-1}}_2 =\frac1{\min\{\sigma\}},\,\sigma \geqslant 0, \,\sigma^2\in\sigma(A^TA).$$
 \textit{Proof:}\\[0.3cm]
 Given an SVD of $A$:
 $$A = U\Sigma V^T,$$ then
 $$A^{-1} = V\Sigma^{-1}U^T,$$
 where $(\Sigma^{-1})_{ij} = 0$ if $i\neq j$ and $(\Sigma^{-1})_{ii} = \frac1{\Sigma_{ii}}$.\\[0.3cm]
 It can easily be verified that $\Sigma^{-1}$ and $A^{-1}$ expressed as such are exactly the inverses of $\Sigma$ and $A$ respectively, and thus $\{\sigma_i = \Sigma_{ii}\}$ and $\{\sigma^{-1}_i = \Sigma^{-1}_{ii}\}$ are the sets of sigular values of $A$ and $A^{-1}$. The $l_2$-norm of $A^{-1}$ can be expressed as the following:
-$$\norm{A^{-1}}_2 = \max_{\sigma^{-1}}{\abs{\sigma^{-1}_i}} = \max_{\sigma_i}\frac1{\sigma_i}=\frac1{\min\{\sigma_i\}}.$$
+\section{Evidence of the theorem in Problem 2}
+The following code was used to 
+% TODO: provide evidence to the theorem
+$$\norm{A^{-1}}_2 = \max_{\sigma_i^{-1}}{\abs{\sigma^{-1}_i}} = \max_{\sigma_i}\frac1{\sigma_i}=\frac1{\min\{\sigma_i\}}.$$
 Consider both $\{\sigma\}$ and $\{\sigma_i\}$ represent the set of singular values of $A$, we've proved the theorem.
 
 \section{}
@@ -213,15 +219,79 @@ Q &= (H_3H_2H_1)^T = H_1^TH_2^TH_3^T\\
 0.4041 & -0.5580 & -0.1204 & -0.4825 & -0.5273
 \end{bmatrix}.
 \end{split}\nonumber\end{equation} 
-And we find that $Z = QR$, just as expected.
+And we find that $\norm{Z-QR}_2 \sim 10^{-15}$, implying that $Z\approx QR$, just as expected.
+
+\section{}
+\subsection{}
+Suppose $Y = HX=(I-2ww^T)X=X-2ww^TX$ is our target matrix to compute, and ${x_i}$ and ${y_i}$ are the $i$th column of matrices $X$ and $Y$ respectively, then
+\begin{equation}\begin{split} 
+y_i = x_i -2(w^Tx_i)w.
+\end{split}\nonumber\end{equation} 
+If we compute $y_i$s in this fashion, then the computation of the inner product between $w$ and $x_i$ requires $m$ multiplications and $m-1$ additions, incurring a cost of $O(m)$; multiplying $w$ by $-2w^Tx_i$ needs another $m$ multiplications, and adding the resulting vector to $x_i$ requires $m$ additions. In general, calculating $y_i$ needs $O(m)+O(m) + O(m) = O(m)$ elemental operations, and there are $m$ of them to calculate; thus getting the whole matrix of $Y$ following this strategy would be of $O(m^2)$ complexity.
+
+\subsection{}
+The strategy we propose is that, given a linear system $$Ax = b,$$ and assuming that $A$ can be QR-factorized into $$A = QR,$$ 
+\begin{equation}\begin{split}
+\Rightarrow Rx&=Q^Tb=H_mH_{m-1}\dots H_1b \\
+&= (I-2w_mw_m^T)(I-2w_{m-1}w_{m-1}^T)\dots(I-2w_1w_1^T)b :=\tilde b.
+\end{split}\nonumber\end{equation} 
+Thus while we are QR-factorizing $A$ with matrices $(I-2w_iw_i^T)$, we multiply the vector on the right hand side by the transformation matrix as well, (this is also of $O(m^2)$ complexity, thus will not change the asymptotic behaviour of the algorithm;) in the $k$th step we only need to multiply $(m-k+2)$ columns ($m-k+1$ on the left hand side, $1$ on the right hand side) by the transformation matrix; however, the comlexity of QR-factorization is still of $O(m^3)$ overall. At the end of the factorization, we should end up with $$Rx=\tilde b,$$ the solution of which is also the solution of the original problem. Since $R$ is upper triangular, we can solve for each component of $x$ bottom up, which add a complexity of $O(m^2)$. In general, we expect the algorithm to solve the linear system within $O(m^3)$ time.
+
+\subsection{}
+We generated two $5\times5$ and two $5\times1$ matrices with random entries as our test $A$s and $b$s; by calculating the $l_2$-norm of $Ax-b$, we verified our algorithm to be correct. (Please refer to the attached diary.)
+
+\subsection{}
+As stated in $5.2$, we expect our algorithm to have the time complexity of $O(m^3)$; to verify this, we tested our script with random matrices of $2\times2$ all the way up to $21\times21$; by fitting the corresponding number of operations used against the dimensionality, we find that the leading term of complexity is $2m^3$, just as expected. If we use quartic model (\texttt{'poly4'} in \texttt{MATLAB} terminology), then the coefficient of the $m^4$ term will be negligible. 
 
 \newpage
 \appendix{}
 \section{\texttt{MATLAB} code that verifies results in Problem 1}
-% TODO: matlab code to verify the results in problem 1
+The script that verifies our result from Problem 1 is the following:\\[0.4cm]
+\texttt{A = {[2, -2; 1, 1]};\\
+rho = max(abs(eig(A)))\\
+norm\_1 = norm(A, 1)\\
+norm\_2 = norm(A, 2)\\
+norm\_inf = norm(A, Inf)\\
+{[U, Sigma, V]} = svd(A)}\\[0.4cm]
+And the output is:\\
+\texttt{rho =\\
+\\
+\ \ \ \ \ 2
+\\
+\\
+norm\_1 =\\
+\\
+\ \ \ \ \ 3
+\\
+\\
+norm\_2 =\\
+\\
+\ \ \ \ 2.8284
+\\
+\\
+norm\_inf =\\
+\\
+\ \ \ \ \ 4\\
+\\
+\\
+U =\\
+\\
+\ \ \ -1.0000\ \ \ -0.0000\\
+\ \ \ -0.0000\ \ \ \ 1.0000\\
+\\
+\\
+Sigma =\\
+\\
+\ \ \ \ 2.8284\ \ \ \ \ \ \ \ \ 0\\
+\ \ \ \ \ \ \ \ \ 0\ \ \ \ 1.4142\\
+\\
+\\
+V =\\
+\\
+\ \ \ -0.7071\ \ \ \ 0.7071\\
+\ \ \ \ 0.7071\ \ \ \ 0.7071}\\[0.4cm]
+Note that the numerical values of $\rho$ and the norms corroborate the results we got in Problem 1. The result from \texttt{MATLAB svd} function minorly differs from our result in Problem 1; however, since both the singular values and the corresponding left/right singular vectors are indentical, our result in Problem 1 must be correct as well.
 
-\section{Evidence of the theorem in Problem 2}
-% TODO: provide evidence to the theorem
 
 
 
