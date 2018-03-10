@@ -1,0 +1,64 @@
+\title{CS 513 Assignment 3}
+\author{Ruochen Lin}
+\documentclass[11pt]{article}
+\usepackage{amsmath,amsfonts,amssymb,amsthm}
+\usepackage{mathtools}
+\usepackage{commath}
+\usepackage{setspace}
+% \setmonofont{hack}
+\begin{document}
+\maketitle
+\section{}
+
+\section{}
+
+\section{}
+\subsection{}
+If we evaluate the condition number of $A$ with $l_2$-norm, then 
+$$c_2(A) = \sqrt{\frac{\max\{\sigma(A^TA)\}}{\min\{\sigma(A^TA)\}}},$$
+because $\sqrt{\max\{\sigma(A^TA) \}}$ and $\sqrt{\min\{\sigma(A^TA) \}}$ gives the largest and smallest sigular values of $A$, respectively, and their ratio is the condition number of $A$.
+\subsection{}
+If $A$ is symmetric, we have proved in the previous assignment that its sigular values are just the absolute value of its eigenvalues. Thus 
+$$c_2(A) = \frac{\max\{\abs{\sigma(A)} \}}{\min\{\abs{\sigma(A)} \}},$$
+in which $\abs{\sigma(A)}$ denotes the set of the absolute values of $A$.
+\subsection{}
+% TODO: check theorem on examples
+
+\section{}
+
+\section{}
+\subsection{}
+Given that $A = C^TC$, $C\in\mathbb{R}^{m\times m}$, for any $x\in\mathbb{R}^m$ we have 
+\begin{equation}\begin{split} 
+x^TAx = x^TC^TCx = (Cx)^T(Cx)\geq0,
+\end{split}\nonumber\end{equation}
+thus $A$ is positive definite. 
+\subsection{}
+Given $$A = \begin{bmatrix} 2 & 2 & 3 \\ 2 & 4 & 5 \\ 3 & 5 & 8\end{bmatrix}, $$
+we can LU-factorize $A$ as the following:
+\begin{equation}\begin{split} 
+L_1 &= \begin{bmatrix} 1 & 0& 0\\ -1 & 1 &0 \\ -\frac32 & 0 & 1\end{bmatrix},\,\,
+L_1A = \begin{bmatrix}2 & 2 & 3 \\ 0 & 2 & 2\\ 0 & 2 & \frac72 \end{bmatrix};\\
+L_2 &= \begin{bmatrix} 1 & 0 & 0 \\ 0 & 1 & 0\\ 0 & -1 &1 \end{bmatrix},\,\,
+U = L_2L_1A = \begin{bmatrix} 2 & 2 & 3 \\ 0 & 2 & 2 \\ 0 & 0 & \frac32 \end{bmatrix};\\
+L &= L_1^{-1}L_2^{-1} = \begin{bmatrix}1 & 0 & 0 \\ 1 & 1 & 0 \\ \frac32 & 1 & 1 \end{bmatrix},\\
+A &= LU.
+\end{split}\nonumber\end{equation} 
+If we further factorize $U$ into the product of a diagonal matrix $D$ and a unit upper triangular matrix $\tilde U$, we have:
+\begin{equation}\begin{split} 
+D &= \begin{bmatrix} 2 & 0 & 0 \\ 0 & 2 & 0 \\ 0 & 0 & \frac32\end{bmatrix}, \,\, 
+\tilde U = \begin{bmatrix} 1 & 1 & \frac32\\ 0 & 1 & 1 \\ 0 & 0 & 1\end{bmatrix},\\
+A &= L D \tilde U.  
+\end{split}\nonumber\end{equation} 
+\subsection{}
+We notice that $\tilde U = L^T$, so if we write $D$ as the square of a diagonal matrix $\tilde D$, then $C = \tilde D \tilde U$. There are actually $2^3=8$ possible choices of $\tilde D$, since each of its three diagonal entries can carry either $+$ or $-$ sign. The following is one of the viable choices:
+\begin{equation}\begin{split}
+\tilde D &= \begin{bmatrix} \sqrt{2} & 0 & 0 \\ 0 & \sqrt{2} & 0 \\ 0 & 0 & \frac{\sqrt{6}}2 \end{bmatrix},\\
+C &= \tilde D \tilde U = \begin{bmatrix}\sqrt{2} & \sqrt{2} & \frac{3\sqrt{2}}2 \\ 0 & \sqrt{2} & \sqrt{2} \\ 0 & 0 & \frac{\sqrt{6}}2  \end{bmatrix},\\
+A &= C^TC.
+\end{split}\nonumber\end{equation} 
+And this $C$ is also the choice of \texttt{MATLAB}.
+% TODO: add chol matlab screenshot
+\section{}
+
+\end{document}
