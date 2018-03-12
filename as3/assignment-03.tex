@@ -9,9 +9,9 @@
 \begin{document}
 \maketitle
 \section{}
-
+Please see attached \texttt{MATLAB} print out.
 \section{}
-
+Judging from the graph, the minimum is achieved at $x=0$, and the maximum is achieved somewhere in $(-0.7, 0.5)$ and again at $(0.5, 0.7)$. It is easy to verify that $x=0$ is indeed the global minimum of $f(x)$, because $f(0) = 0$ and $f(x)>0$ when $x\neq0$. To locate the maximum more accurately, we called the \texttt{solve(y1(x)==0, x)} in \texttt{MATLAB}, and the three roots are $-0.5778$, $0$, and $0.5778$. The second root corresponds to the minima, and plugging in $\pm0.5778$ into \texttt{y0} we got the approximate maximum of $f(x)$ on $[-10, 10]$: $f(\pm0.5778) = 0.1228$.
 \section{}
 \subsection{}
 If we evaluate the condition number of $A$ with $l_2$-norm, then 
@@ -25,7 +25,7 @@ in which $\abs{\sigma(A)}$ denotes the set of the absolute values of $A$.
 % TODO: check theorem on examples
 
 \section{}
-
+Please see attached \texttt{MATLAB} code and output.
 \section{}
 \subsection{}
 Given that $A = C^TC$, $C\in\mathbb{R}^{m\times m}$, for any $x\in\mathbb{R}^m$ we have 
@@ -60,5 +60,6 @@ A &= C^TC.
 And this $C$ is also the choice of \texttt{MATLAB}.
 % TODO: add chol matlab screenshot
 \section{}
-
+Please see attached code and output for solutions.
+% TODO: discuss whether it's a contradiction.
 \end{document}
