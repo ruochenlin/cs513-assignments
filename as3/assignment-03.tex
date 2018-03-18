@@ -22,10 +22,27 @@ If $A$ is symmetric, we have proved in the previous assignment that its sigular 
 $$c_2(A) = \frac{\max\{\abs{\sigma(A)} \}}{\min\{\abs{\sigma(A)} \}},$$
 in which $\abs{\sigma(A)}$ denotes the set of the absolute values of $A$.
 \subsection{}
+There is no matrix in display $\mathfrak{N}$, so we are going to check only on the matrix in $\mathfrak{NN}$, namely
+\begin{equation}\begin{split}A&=\begin{bmatrix} -8 & 144 \\ 144 & -92\end{bmatrix},\\
+A^TA &= \begin{bmatrix} 20800 & -14400 \\ -14400 & 29200\end{bmatrix} \\
+\Rightarrow \sigma(A) & = \{-200, 100 \}, \,\,\sigma(A^TA) = \{10000, 40000\}.
+\end{split}\nonumber\end{equation} 
+The singular values of $A$ are $\sqrt{10000} = 100$ and $\sqrt{40000} = 200$, and the condition number of $A$ is 
+\begin{equation}\begin{split} 
+c_2(A) = \frac{200}{100}=2,
+\end{split}\nonumber\end{equation} 
+which exactly matches our prediction from preceding discussions.
 % TODO: check theorem on examples
 
 \section{}
-Please see attached \texttt{MATLAB} code and output.
+Please see attached \texttt{MATLAB} code and output.\\[0.3cm]
+We first tested our model against a polynomial, to see whether it can reproduce the correct coefficients. We then used our code to fit the function in Problem 2, as well as $\tan\frac x3$ and $\abs{x-1}$ on the interval $[0,3]$ with parameters $m = 20,\,30,\,40$ and $k=4,\,5,\,6$. The following are our observations:
+\begin{enumerate}
+\item In all cases, when we fix $k$ and increase $m$, the size of residue would increase; this is because with $k+1$ parameters we can only cancel $k+1$ entries in $Q^Tb$, leaving $m-k-1$ entries not cancellable. As we increase $m$ while fixing $k$, there'll be more nonzero entries in the residue, leading to a larger norm of $Ax-b$.
+\item The explanation above is further supported by the fact that while we fix $m$ and increase $k$, the norm of residue decreases.
+\item It might be more rigorous to use a seperate test dataset to evaluate our model; using the norm of residue as the sole metric risks overfitting over the training set.
+\end{enumerate}
+  
 \section{}
 \subsection{}
 Given that $A = C^TC$, $C\in\mathbb{R}^{m\times m}$, for any $x\in\mathbb{R}^m$ we have 
@@ -60,6 +77,46 @@ A &= C^TC.
 And this $C$ is also the choice of \texttt{MATLAB}.
 % TODO: add chol matlab screenshot
 \section{}
-Please see attached code and output for solutions.
+With $$A = \begin{bmatrix} 
+1 & 2 & 3 \\
+4 & 5 & 6 \\
+7 & 8 & 9 
+\end{bmatrix},\,\,
+b = \begin{bmatrix} 1 \\ 0 \\ 1\end{bmatrix},
+$$
+we want to minimize $\norm{Ax - b}_2$. First, we can do QR-decomposition to A:
+\begin{equation}\begin{split} 
+A = QR = 
+\begin{bmatrix} 
+\frac1{\sqrt{66}} & \frac3{\sqrt{11}} & -\frac1{\sqrt{6}} \\
+2\sqrt{\frac2{33}} & \frac1{\sqrt{11}} & \sqrt{\frac23} \\
+\frac7{\sqrt{66}} & -\frac1{\sqrt{11}} & -\frac1{\sqrt{6}}
+\end{bmatrix} 
+\begin{bmatrix} 
+\sqrt{66} & 28\sqrt{\frac2{33}} + \sqrt{\frac{22}3} & 4\sqrt{\frac6{11}} + \sqrt{66} \\
+0 & \frac{3}{\sqrt{11}} & \frac6{\sqrt{11}} \\
+0 & 0 & 0
+\end{bmatrix}. 
+\end{split}\nonumber\end{equation} 
+Since $\norm{Q^Tx}_2 = \norm{x}_2$, minimizing $\norm{Q^T(Ax-b)}_2 = \norm{Rx-Q^Tb}_2$ would be equivalent with minimizing $\norm{Ax-b}$: 
+$$Rx-Q^Tb = 
+\begin{bmatrix} 
+\sqrt{66} & 28\sqrt{\frac2{33}} + \sqrt{\frac{22}3} & 4\sqrt{\frac6{11}} + \sqrt{66} \\
+0 & \frac{3}{\sqrt{11}} & \frac6{\sqrt{11}} \\
+0 & 0 & 0
+\end{bmatrix}x-
+\begin{bmatrix} 
+4\sqrt{\frac2{33}} \\ \frac2{\sqrt{11}} \\ -\sqrt{\frac23}
+\end{bmatrix}.
+$$
+\\[0.3cm]
+We notice that the third row of $R$ is empty, which means that there's nothing we can do about the third entry in $Q^Tb$, namely $-\sqrt{\frac23} \approx -0.816$, the absolute value of which will be the residue of our least squares problem. As for the first two entries in $Q^Tb$, we can carefully choose our $x$ so that they are cancelled out in the subtraction. Since we're now solving a linear system with 3 variables and 2 equations, we have the freedom to set one of the variables to whatever value we want. For example, if we set the $i$th entry in the $i$th solution to be zero, we have the following three least sqaures solutions:
+\begin{equation}\begin{split}
+x_1 = \begin{bmatrix} 0 \\ -\frac23 \\ \frac23\end{bmatrix},\,\,
+x_2 = \begin{bmatrix} -\frac13 \\ 0 \\ \frac13\end{bmatrix},\,\,
+x_3 = \begin{bmatrix} -\frac23 \\ \frac23 \\ 0\end{bmatrix}.
+\end{split}\nonumber\end{equation}
+It's easy to verify that they both lead to $\norm{Ax-b}_2 = \norm{Rx-Q^Tb}_2 = \sqrt{\frac23}$, which we also verified with \texttt{MATLAB}. \\[0.3cm]
+Though it might seems that the solution to our least squares problem is not unique in this case, all three solutions correspond to the same point in the range of $A$. In fact, because the difference between any two solutions of our problem belongs to the kernel of $A$, namely $A(x_i-x_k) = 0$, we can generate infinite new solutions just by adding a multiple of the difference between two existing solutions to any solution; however, when projected onto the range of $A$, they still correspond to the same point, and this is what \textit{unique} means in this context.
 % TODO: discuss whether it's a contradiction.
 \end{document}
