@@ -5,6 +5,7 @@
 \usepackage{mathtools}
 \usepackage{commath}
 \usepackage{setspace}
+\usepackage{algorithm,algorithmic}
 % \setmonofont{hack}
 \begin{document}
 \maketitle
@@ -16,4 +17,38 @@ C_{i,j}&=B_{i+1,j+1}-\frac{B_{i+1,1}}{B_{1,1}}B_{1,j+1}\\
 \Leftrightarrow C_{j,i} &= B_{j+1,i+1} - \frac{B_{j+1,1}}{B_{1,1}}B_{1,i+1}.
 \end{split}\nonumber\end{equation} 
 If $B$ is symmetric, then we have $B_{i+1,j+1} = B_{j+1,i+1}$, $B_{i+1,1} = B_{1,i+1}$, and $B_{1,j+1} = B_{j+1,1}$, which leads to $C_{i,j} = C_{j,i}$. In other words, if we start with a symmetric matrix at the beginning of the step, then the resulting matrix will also be symmetric. Note that we do start with a symmetric matrix, $A$; thus the lower right sqaure matrices after each step of Gaussian elimination will all be symmetric.
+
+\subsection{}
+We can modify the algorithm of the LU-factorization for symmetric matrices, utilizing the theorem in the preceeding part: in the $k$th step of the Gaussian elimination, we can only update the entries in the lower triangular part of the remaining $(m-k-1)\times(m-k-1)$ block at bottom right. The pseudocode of such algorithm is the following:
+\begin{algorithm}[H]
+\caption{LU-factorization for a symmetric matrix A}
+\begin{algorithmic}
+	\STATE L = eye(m)
+    \FOR{i = 1 : m - 1}
+		\FOR{j = i + 1 : m}
+			\STATE L(j,i) = A(j,i) / A(i,i)
+			\STATE A(j,i) = 0
+			\FOR {k = i + 1 : j}
+				\STATE A(j,k) = A(j,k) - L(j,i) * A(i,k)
+				\IF{k != j}
+					\STATE A(k,j) = A(j,k)
+				\ENDIF
+			\ENDFOR
+		\ENDFOR
+    \ENDFOR
+	\STATE U = A
+\end{algorithmic}
+\end{algorithm}
+It's easy to see that the most executed part of the algorithm is the inner most loop with the dummy index $k$. In lieu of the analysis in class, if we only count multiplications, then each execution of the inner most loop contributes exactly $1$ operation. The total number of multiplications, $N(m)$, can be estimated as the following:
+\begin{equation}\begin{split} 
+N(m) &= \sum_{i=1}^{m-1} \sum_{j=i+1}^m \sum_{k=i+1}^j 1\\
+&= \sum_{i=1}^{m-1} \sum_{j=i+1}^m (j-i) \\
+&= \sum_{i=1}^{m-1} \Big[ 1 + 2 + \cdots + (m-i) \Big] \\
+&= \sum_{i=1}^{m-1} \frac{(m-i)(m-i+1)}2 \\
+&= \sum_{i=1}^{m-1} \Big[ \frac{(m-i)^2}2 + O(m) \Big]\\
+&= \frac12\Big[ 1^2 + 2^2 + \cdots + (m-1)^2 \Big] + O(m^2) \\
+&= \frac12\cdot \frac{(m-1)m(2m-1)}6 + O(m^2)\\
+&=\frac{m^3}6 + O(m^2).
+\end{split}\nonumber\end{equation} 
+Thus, our current algorithm is almost twice as fast as Gaussian eliminationi for general matrices.
 \end{document}
