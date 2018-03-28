@@ -1,0 +1,19 @@
+\title{CS 513 Assignment 4}
+\author{Ruochen Lin}
+\documentclass[11pt]{article}
+\usepackage{amsmath,amsfonts,amssymb,amsthm}
+\usepackage{mathtools}
+\usepackage{commath}
+\usepackage{setspace}
+% \setmonofont{hack}
+\begin{document}
+\maketitle
+\section{}
+\subsection{}
+In the $k+1$th step of Gaussian elimination for a $m\times m$ square matrix, the first $k$ columns and rows are untouched; thus we are effectively performing the step on a $(n-k)\times(n-k)$ square matrix. If we call this square matrix $B$, and the resulting $(n-k-1)\times(n-k-1)$ matrix $C$, then the entries of $C$ is given by the following equation:
+\begin{equation}\begin{split} 
+C_{i,j}&=B_{i+1,j+1}-\frac{B_{i+1,1}}{B_{1,1}}B_{1,j+1}\\
+\Leftrightarrow C_{j,i} &= B_{j+1,i+1} - \frac{B_{j+1,1}}{B_{1,1}}B_{1,i+1}.
+\end{split}\nonumber\end{equation} 
+If $B$ is symmetric, then we have $B_{i+1,j+1} = B_{j+1,i+1}$, $B_{i+1,1} = B_{1,i+1}$, and $B_{1,j+1} = B_{j+1,1}$, which leads to $C_{i,j} = C_{j,i}$. In other words, if we start with a symmetric matrix at the beginning of the step, then the resulting matrix will also be symmetric. Note that we do start with a symmetric matrix, $A$; thus the lower right sqaure matrices after each step of Gaussian elimination will all be symmetric.
+\end{document}
