@@ -1,4 +1,4 @@
-function [L,U] = symm_lr(A)
+function [L,U] = symm_lu(A)
 % Pre: A is a real symmetric matrix
 % Post: L, U are the resulting matrices of LU-factorization of A
 m = length(A);
