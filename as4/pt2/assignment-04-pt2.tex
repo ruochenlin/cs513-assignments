@@ -1,0 +1,75 @@
+\title{CS 513 Assignment 4 -- Part II}
+\author{Ruochen Lin}
+\documentclass[11pt]{article}
+\usepackage{amsmath,amsfonts,amssymb,amsthm}
+\usepackage{mathtools}
+\usepackage{commath}
+\usepackage{setspace}
+\usepackage{algorithm,algorithmic}
+% \setmonofont{hack}
+\begin{document}
+\maketitle
+\section{}
+\subsection{}
+\begin{equation}\begin{split} 
+A = \begin{bmatrix} 
+309 & 228 & -240 \\
+60 & -117 & 510 \\ 
+12 & 6 & 298
+\end{bmatrix} &/49,\,\,v = \begin{bmatrix} 6 \\ 3 \\ 2\end{bmatrix} \\
+Av = \begin{bmatrix} 42 \\ 21 \\ 14 \end{bmatrix} &= 7v,
+\end{split}\nonumber\end{equation}
+thus $(7,v)$ is an eigenpair of $A$.\\[0,35cm]
+First we can normalize $v$ and define 
+$$v_0 = \frac v{\norm{v}_2} = \begin{bmatrix} 6/7 \\ 3/7 \\2/7\end{bmatrix}. $$
+The Householde matrix that maps $\tilde v$ to $e_1$ can be constructed as the following:
+\begin{equation}\begin{split} 
+H &= I - \frac2{\norm{v_0 - e_1}^2}(v_0 - e_1)(v_0 - e_1)^T\\
+&=\begin{bmatrix} 
+\frac67 & \frac 37 & \frac27 \\
+\frac37 & -\frac 27 & -\frac67 \\
+\frac27 & -\frac67 & \frac37
+\end{bmatrix},\\
+B&=HAH=\begin{bmatrix} 
+7 & 0 & 0 \\
+0 & 9 & -6 \\
+0 & 6 & -6
+\end{bmatrix}.
+\end{split}\nonumber\end{equation}
+We see that 7 is indeed the first entry of $B$, just as expected. Also, the deflated matrix is
+$$B_1 = \begin{bmatrix}9 & -6\\6 & -6 \end{bmatrix}.$$
+
+\subsection{}
+\begin{equation}\begin{split} 
+\det(B_1-\lambda I) &= (9-\lambda)(-6-\lambda) + 36 = 0 \\
+\Longrightarrow \lambda_1 &= -3,\,\,\lambda_2 = 6.
+\end{split}\nonumber\end{equation} 
+Solving $(B_1-\lambda_iI)w_i=0$, requiring $w_i$ to be normalized, we have:
+\begin{equation}\begin{split} 
+w_1 = \begin{bmatrix} \frac1{\sqrt{5}} \\ \frac2{\sqrt{5}}\end{bmatrix},\,\,
+w_2 = \begin{bmatrix} \frac2{\sqrt{5}} \\ \frac1{\sqrt{5}}\end{bmatrix}. 
+\end{split}\nonumber\end{equation} 
+
+\subsection{}
+Since the row vector right to 7 in the first row of $B$ is zero, the eigenvectors of $B$, corresponding to $\lambda_1$ and $\lambda_2$ are simply
+\begin{equation}\begin{split} 
+\tilde w_1 = \begin{bmatrix}0 \\ \frac1{\sqrt{5}} \\ \frac2{\sqrt{5}} \end{bmatrix},\,\,\tilde w_2 = \begin{bmatrix} 0 \\ \frac2{\sqrt{5}} \\ \frac1{\sqrt{5}} \end{bmatrix}.
+\end{split}\nonumber\end{equation} 
+The eigenbasis of $A$, ${v_0,v_1, v_2}$, can be found using
+$$v_1 = H\tilde w_1 = \begin{bmatrix} 1 \\ -2 \\ 0\end{bmatrix},\,\,v_2=H\tilde w_2 = \begin{bmatrix} \frac87\\ -\frac{10}7\\ -\frac97\end{bmatrix}.$$ 
+
+\subsection{}
+If we concatenate the three eigenvectors of $A$, we have
+$$P = \begin{bmatrix}6 & 1 & 8\\ 3 & -2 & -10 \\ 2 & 0 & -9\end{bmatrix},$$
+inverting which would gets us 
+$$P^{-1} = \begin{bmatrix} 
+\frac6{49} & \frac3{49} & \frac2{49} \\
+\frac{1}{21} & -\frac{10}{21} & -\frac{4}{7} \\
+\frac4{147} & -\frac2{147} & -\frac5{49}
+\end{bmatrix}. $$
+These, together with
+$$
+D = \begin{bmatrix} 7 \\ & -3 \\ & & 6 \end{bmatrix} 
+$$
+give us $A = P D P^{-1}$
+\end{document}
