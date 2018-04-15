@@ -1,0 +1,46 @@
+\title{CS 513 Assignment 5}
+\author{Ruochen Lin}
+\documentclass[11pt]{article}
+\usepackage{amsmath,amsfonts,amssymb,amsthm}
+\usepackage{mathtools}
+\usepackage{commath}
+\usepackage{setspace}
+% \usepackage{algorithm,algorithmic}
+\begin{document}
+\maketitle
+\section{}
+
+\section{}
+\subsection{}
+The cardinality of $\sigma(A)$ is n, because in each of the pairwise disjoint disks there is one (and only one) eigenvalue of $A$, which add up to give $n$ distinct eigenvalues. In addition, for each of the eigenvalues, both the corresponding algebraic and geometric multiplicity is $1$.
+
+\subsection{}
+The proposition is true, because for each of the eigenvalues of $A$, the algebraic multiplicity is equal to geometric multiplicity, which is a sufficient (and necessary) condition for $A$ to be diagonalizable.
+
+\subsection{}
+The claim is write, and we can prove if by mathematical induction. Starting with a general real $2\times2$ matrix
+\begin{equation}\begin{split}
+A_2 &= \begin{bmatrix} a & b \\ c & d \end{bmatrix},\\ 
+\det(\lambda I - A_2) &= (\lambda-a)(\lambda - d) - bc \\
+&= \lambda^2 - (a + d)\lambda + ad - bc. 
+\end{split}\nonumber\end{equation} 
+For the characteristic equation to have complex solutions, necessarily its discriminant needs to be negative. That is, we require
+\begin{equation}\begin{split}
+\Delta &= (a+d)^2 -4(ad-bc) \\
+&= (a-d)^2+4bc < 0.
+\end{split}\nonumber\end{equation} 
+However, for the Gershgorin disks to be disjoint, we have 
+\begin{equation}\begin{split} 
+\abs{a-d} &> \abs{b} + \abs{c}\\
+\Rightarrow \,\, (a-d)^2 &> (\abs{b}+\abs{c})^2 \\
+&=b^2+c^2+2\abs{bc} \\
+&\geq b^2+ c^2 - 2bc.
+\end{split}\nonumber\end{equation} 
+This implies that 
+\begin{equation}\begin{split} 
+\Delta& = (a-d)^2+4bc \\
+&>b^2+c^2-2bc+4bc \\
+&=(b-c)^2 \geq0.
+\end{split}\nonumber\end{equation} 
+Hence for $A_2\in\mathbb{R}^{2\times2}$, all eigenvalues must be real. Let's move on to $A_3\in\mathbb{R}^{3\times3}$: for $A_3$ to satisfy our requirements, \textit{i.e.} all of the Gershgorin disks of $A_3$ to be mutally disjoint, necessarily its top left $2\times2$ block also satisfies the condition and thus have real eigenvalues and trace. The trace of $A_3$ is the sum of the trace of its upper left $2\times2$ block and $(A_3)_{33}$. Since 
+\end{document}
