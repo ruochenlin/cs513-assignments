@@ -18,29 +18,42 @@ The cardinality of $\sigma(A)$ is n, because in each of the pairwise disjoint di
 The proposition is true, because for each of the eigenvalues of $A$, the algebraic multiplicity is equal to geometric multiplicity, which is a sufficient (and necessary) condition for $A$ to be diagonalizable.
 
 \subsection{}
-The claim is write, and we can prove if by mathematical induction. Starting with a general real $2\times2$ matrix
-\begin{equation}\begin{split}
-A_2 &= \begin{bmatrix} a & b \\ c & d \end{bmatrix},\\ 
-\det(\lambda I - A_2) &= (\lambda-a)(\lambda - d) - bc \\
-&= \lambda^2 - (a + d)\lambda + ad - bc. 
-\end{split}\nonumber\end{equation} 
-For the characteristic equation to have complex solutions, necessarily its discriminant needs to be negative. That is, we require
-\begin{equation}\begin{split}
-\Delta &= (a+d)^2 -4(ad-bc) \\
-&= (a-d)^2+4bc < 0.
-\end{split}\nonumber\end{equation} 
-However, for the Gershgorin disks to be disjoint, we have 
+The claim is correct, and we can prove it by contradiction: If the imaginary part of an eigenvalue of a real matrix $A$ is not zero, namely $Av=\lambda v,\,\,\lambda =x+iy,\,\,y\neq0$, then we can take the complex conjugate of the equation to write $A\bar v = \bar\lambda\bar v$, namely $\bar\lambda$ will also be an eigenvalue of $A$. Since all of the Gershgorin disks of $A$ are centered on the real axis, if $\lambda=x+iy$ is in one of the disks, $\bar\lambda=x-iy$ will also be in the same disk. However, we know from preceeding discusions that in each of the Gershgorin disks there can be only one eigenvalue of $A$; hence we know that all of the eigenvalues of $A$ must be real.
+
+\subsection{}
+This is not true. The following is a counterexample: with a simple matrix whose Gershgorin disks are obvious disjoint:
 \begin{equation}\begin{split} 
-\abs{a-d} &> \abs{b} + \abs{c}\\
-\Rightarrow \,\, (a-d)^2 &> (\abs{b}+\abs{c})^2 \\
-&=b^2+c^2+2\abs{bc} \\
-&\geq b^2+ c^2 - 2bc.
-\end{split}\nonumber\end{equation} 
-This implies that 
+A = \begin{bmatrix}1&0\\0&-1 \end{bmatrix}, 
+\end{split}\nonumber\end{equation}
+and the input vector $x = \begin{bmatrix} 1&1\end{bmatrix}^T $, the sequence $\{A^nx\}_{n=1}^{\infty}$ oscillates back and forth between $\begin{bmatrix} 1&1\end{bmatrix}^T $ and $\begin{bmatrix} 1 & -1\end{bmatrix} $, which clearly does not converge.
+
+\section{}
+
+\section{}
+\subsection{}
+Answer: the diagonal and first and second superdiagonal entries of $R$ are potentially non-zero, and $Q$ is tridiagonal. The explanation is the following:\\[0.3cm]
+Because $A$ is symmetric tridiagonal, \textit{i.e.} 
 \begin{equation}\begin{split} 
-\Delta& = (a-d)^2+4bc \\
-&>b^2+c^2-2bc+4bc \\
-&=(b-c)^2 \geq0.
+A = \begin{bmatrix} 
+a & b\\
+b & c & d\\
+& d & \ddots & \ddots\\
+& & \ddots & x  & y \\
+& & & y & z
+\end{bmatrix},
 \end{split}\nonumber\end{equation} 
-Hence for $A_2\in\mathbb{R}^{2\times2}$, all eigenvalues must be real. Let's move on to $A_3\in\mathbb{R}^{3\times3}$: for $A_3$ to satisfy our requirements, \textit{i.e.} all of the Gershgorin disks of $A_3$ to be mutally disjoint, necessarily its top left $2\times2$ block also satisfies the condition and thus have real eigenvalues and trace. The trace of $A_3$ is the sum of the trace of its upper left $2\times2$ block and $(A_3)_{33}$. Since 
+when we're eliminating the subdiagonal entries of $A$ with Householders, $H_k$ needs only to alter the $k$th and $k+1$th rows. As a result, in the region above the diagonal, only the $(k,k+2)$ entry risks becoming nonzero from zero in the $k$th step. After $m-1$ steps, the only entries in $R$ that can be nonzero are ones on the diagonal, first superdiagonal and second superdiagonal. \\[0.3cm]
+$Q=\prod_{k=1}^{m-1}H_k$ is the same as the resulting matrix after applying the operations, as detailed above, on the identity matrix: in each step nonzero elements are introduced in sub- and super-diagonal positions. After $m-1$ steps, it's obvious that $Q$ is tridiagonal.
+\subsection{}
+Because $A = QR = H_{m-1}H_{m-2}\cdots H_2 H_1R$, $RQ$ can be written as 
+\begin{equation}\begin{split} 
+RQ = RH_{m-1}\cdots H_1 \\
+\end{split}\nonumber\end{equation}
+The effect of $H_{m-1}$ on $R$ is `messing up' the last two columns while leaving other columns unchanged. Thus, in the lower triangular part of $RH_{m-1}$, the only nonzero entry is $(RH_{m-1})_{m, m-1}$. Similarly, the effect of $H_{m-2}$ on $RH_{m-1}$ is altering the $m-1$th and $m-2$th columns while keeping others intact\footnote{For a general $H_{m-2}$ operated from the right, the last three columns will be altered, and after $m-1$ operations the resulting matrix is no Hessenberg. However, since we started with a triadiagonal matrix in QR factorization, the $k$th Householder need only to change the $k$th and $k+1$th rows when operating from the left (or columns from the right); hence we have this nice property.}, and the only nonzero entries below diagonal now are at $(m,m-1)$ and $(m-1,m-2)$. After $m-1$ operations of Householder matrices from the right, all of the subdiagonal entries will potentially be nonzero, and the resulting matrix, $RQ$, is a Hessenberg matrix.\\[0.3cm]
+In addition, we can write $R$ as 
+\begin{equation}\begin{split} 
+R = Q'A = H_{m-1}\cdots H_1A,
+\end{split}\nonumber\end{equation} 
+so that $RQ=Q'AQ$. Because $A$ is symmetric, $Q'AQ$ must be symmetric as well. Thus, $RQ$ is a symmetric Henssenberg matrix, which is tridiagonal.
+ 
 \end{document}
