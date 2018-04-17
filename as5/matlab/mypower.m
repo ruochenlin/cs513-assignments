@@ -3,7 +3,7 @@ epsilon = 1e-2;
 m = length(A);
 % Find the eigenvalue with the largest amplitude
 v = rand(m, 1);
-v = v ./ norm(v);
+v = v / norm(v);
 Av = A * v;
 norm_Av = norm(Av);
 lambda = v' * Av;
@@ -18,7 +18,7 @@ end
 e1 = zeros(m, 1);
 e1(1) = 1;
 w = v - e1;
-w = w ./ norm(w);
+w = w / norm(w);
 wTA = w' * A;
 Aw = A * w;
 B = A - 2 * w * wTA - 2 * Aw * w' + 4 * (wTA * w) * w * w';
@@ -26,7 +26,7 @@ B = A - 2 * w * wTA - 2 * Aw * w' + 4 * (wTA * w) * w * w';
 B1 = B(2:end, 2:end);
 n = m - 1;
 v1 = rand(n, 1);
-v1 = v1 ./ norm(v1);
+v1 = v1 / norm(v1);
 B1v1 = B1 * v1;
 norm_B1v1 = norm(B1v1);
 lambda_1 = v1' * B1v1;
