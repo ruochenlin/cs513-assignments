@@ -9,10 +9,28 @@
 \begin{document}
 \maketitle
 \section{}
+\subsection{}
+We start with LU-factorization first. We only need to know the number of negative eigenvalues on the diagonal of $U$ matrices after decomposition, so we only need to update the diagonal elements. If we denote the resulting upper triangular matrices from the LU decomposition of $A$ and $A-I$ as $U_0$ and $U_1$, the diagonal elements of $U_0$ are -1, 2 and 1.5, and the those of $U_1$ are -2, 0.5 and -1. Thus there is one eigenvalue of $A$ in $(0,1)$.\\[0.3cm]
+Now, let's calculate the determinants of the principal minors of $A$ and $A-I$ to achieve the same goal. The determinants of the principal minors of $A$ are -1, -2, and -5, and those of $A-I$ are -2, -1, and 1. Considering the implicit 1 at the beginning of the sequence, the number of negative eigenvalues of $A$ and $A-I$ are 1 and 2. Thus, there is 1 eigenvalue of $A$ in the interval of $(0,1)$.
 
+\subsection{}
+In the LU approach, we calculated $1 - 1^2/(-1) = 2$ and $2 - 1^2/2 = 1.5$ for $A$ and $0-1^2/(-2) = 0.5$ and $1-1^2/0.5 = -1$ for $A-I$: a total of 2 multiplications and 2 divisions were carried out for each matrix. The formula used to update the diagonal elements is $U_{k,k} = A_{k,k} - A_{k,k-1}^2/U_{k-1,k-1}.$ In general, for a $m\times m$ tridiagonal matrix, $m-1$ multiplications and $m-1$ divisions needs to be carried out.\\[0.3cm]
+When calculating the determinants, if we set $d(0)=1$ and $d(1)=A_{1,1}$, the recurrent formula is $d(k) = A_{k,k}*d(k-1)-A_{k,k-1}^2*d(k-2)$. For $k=2,\cdots,m$, we use the recurrent formula to calculate the determinants of the corresponding minors: a total of $3(m-1)$ multiplications are needed.\\[0.3cm]
+If we deem the cost of division as the same as that of multiplication, we might come to the conclusion that LU-factorization is a better algorithm. However, on most machines, floating-point division, which can cost as many as more than 10 clock cycles, is about 3--5 times slower than multiplication; thus, we expect the determinant approach to have better performance. In addition, doing LU-factorization without pivotting always risks encountering zero or small diagonal entries: another point for determinants!
+\subsection{}
+Figure 1 is a plot of time consumed to find the number of eigenvalues between 0 and 1 for symmetric 
+Figure 1 shows that both methods generally have linear complexity for random symmetric tridiagonal matrices. The determinant method is more efficient, compared to LU-factorization, which agrees with our analysis above.
+\begin{figure}[t]
+\centering
+{
+\includegraphics[width=10cm]{matlab/prob1.jpg}
+\caption{plot of time consumed to find the number of eigenvalues between 0 and 1 for symmetric tridiagonal matrices of different sizes. The time shown is the total of operating on 1,000 matrices of each size.}
+}
+\end{figure}
+\pagebreak
 \section{}
 \subsection{}
-The cardinality of $\sigma(A)$ is n, because in each of the pairwise disjoint disks there is one (and only one) eigenvalue of $A$, which add up to give $n$ distinct eigenvalues. In addition, for each of the eigenvalues, both the corresponding algebraic and geometric multiplicity is $1$.
+The cardinality of $\sigma(A)$ is $n$, because in each of the pairwise disjoint disks there is one (and only one) eigenvalue of $A$, which add up to give $n$ distinct eigenvalues. In addition, for each of the eigenvalues, both the corresponding algebraic and geometric multiplicity is $1$.
 
 \subsection{}
 The proposition is true, because for each of the eigenvalues of $A$, the algebraic multiplicity is equal to geometric multiplicity, which is a sufficient (and necessary) condition for $A$ to be diagonalizable.
