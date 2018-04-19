@@ -1,3 +1,4 @@
+clear all;
 load as5_q3.mat;
 epsilon = 1e-2;
 m = length(A);

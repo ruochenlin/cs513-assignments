@@ -5,7 +5,7 @@
 \usepackage{mathtools}
 \usepackage{commath}
 \usepackage{setspace}
-% \usepackage{algorithm,algorithmic}
+\usepackage{algorithm,algorithmic}
 \begin{document}
 \maketitle
 \section{}
@@ -15,7 +15,7 @@ Now, let's calculate the determinants of the principal minors of $A$ and $A-I$ t
 
 \subsection{}
 In the LU approach, we calculated $1 - 1^2/(-1) = 2$ and $2 - 1^2/2 = 1.5$ for $A$ and $0-1^2/(-2) = 0.5$ and $1-1^2/0.5 = -1$ for $A-I$: a total of 2 multiplications and 2 divisions were carried out for each matrix. The formula used to update the diagonal elements is $U_{k,k} = A_{k,k} - A_{k,k-1}^2/U_{k-1,k-1}.$ In general, for a $m\times m$ tridiagonal matrix, to update the diagonal elements apart from the first one, $m-1$ multiplications, $m-1$ divisions, and $m-1$ subtractions need to be carried out.\\[0.3cm]
-When calculating the determinants, if we set $d(0)=1$ and $d(1)=A_{1,1}$, the recurrent formula is $d(k) = A_{k,k}*d(k-1)-A_{k,k-1}^2*d(k-2)$. For $k=2,\cdots,m$, we use the recurrent formula to calculate the determinants of the corresponding minors: a total of $3(m-1)$ multiplications and $m-1$ subtrations are needed.\\[0.3cm]
+When calculating the determinants, if we set $d(0)=1$ and $d(1)=A_{1,1}$, the recurrent formula is $d(k) = A_{k,k}\times d(k-1)-A_{k,k-1}^2 \times d(k-2)$. For $k=2,\cdots,m$, we use the recurrent formula to calculate the determinants of the corresponding minors: a total of $3(m-1)$ multiplications and $m-1$ subtrations are needed.\\[0.3cm]
 If we deem the cost of division as the same as that of multiplication, we might come to the conclusion that LU-factorization is a better algorithm. However, on most machines, floating-point division, which can cost as many as more than 10 clock cycles, is about 3--5 times slower than multiplication; thus, we expect the determinant approach to have better performance. In addition, doing LU-factorization without pivotting always risks encountering zero or small diagonal entries: another point for determinants!
 \subsection{}
 Figure 1 shows that both methods generally have linear complexity for random symmetric tridiagonal matrices. The determinant method is more efficient, compared to LU-factorization, which agrees with our analysis above.
@@ -45,7 +45,73 @@ A = \begin{bmatrix}1&0\\0&-1 \end{bmatrix},
 and the input vector $x = \begin{bmatrix} 1&1\end{bmatrix}^T $, the sequence $\{A^nx\}_{n=1}^{\infty}$ oscillates back and forth between $\begin{bmatrix} 1&1\end{bmatrix}^T $ and $\begin{bmatrix} 1 & -1\end{bmatrix} $, which clearly does not converge.
 
 \section{}
-
+The algorithms for power iteration and inverse power iteration are shown below. Note that all of the norms refer to $l_2$-norm.
+\begin{algorithm}[H]
+\caption{Power iteration to find the two dominant eigenvalues of $A$}
+\begin{algorithmic}
+	\STATE $v$ = random $m\times m$ vector s.t. $\norm{v} = 1$
+	\STATE $\lambda = \langle v,Av\rangle$
+	\WHILE{$\dfrac{\norm{Av-\lambda v}}{\norm{Av}}\geq \epsilon$}
+		\STATE $v=Av$ normalized
+		\STATE $\lambda = \langle v,Av\rangle$
+	\ENDWHILE
+	\STATE $w=v-e_1$ normalized
+	\STATE $B = (I-2ww^T)A(I-2ww^T)$
+	\STATE $B_1 = B(2:\text{end}, 2:\text{end})$
+	\STATE $v_1=$ random $(m-1)\times(m-1)$ vector s.t. $\norm{v_1} = 1$
+	\STATE $\lambda_1 = \langle v_1,B_1v_1\rangle$
+	\WHILE {$\dfrac{\norm{B_1v_1-\lambda_1v_1}}{\norm{B_1v_1}}\geq\epsilon$}
+		\STATE $v_1 = B_1v_1$ normalized
+		\STATE $\lambda_1 = \langle v_1,B_1v_1\rangle$
+	\ENDWHILE
+\end{algorithmic}
+\end{algorithm}
+\begin{algorithm}[H]
+\caption{Inverse iteration to find the two smallest (in modulus) eigenvalues of $A$}
+\begin{algorithmic}
+	\STATE $v=$ random $m\times m$ vector s.t. $\norm{v} = 1$
+	\STATE QR factorize $A$ to get $Q$, $R$
+	\STATE Solve $Qy=v$ for $y$
+	\STATE Solve $Ru=y$ for $u$
+	\STATE $\zeta=v^Tu$
+	\WHILE {$\dfrac{\norm{u-\zeta v}}{\norm{u}}\geq \epsilon$ }
+		\STATE $v = u$ normalized
+		\STATE Solve $Qy=v$ for $y$
+		\STATE Solve $Ru=y$ for $u$
+		\STATE $\zeta = \langle v,u\rangle$
+	\ENDWHILE
+	\STATE $\lambda=\dfrac1{\zeta}$
+	\STATE $w=v-e_1$ normalized
+	\STATE $B = (I-2ww^T)A(I-2ww^T)$
+	\STATE $B_1 = B(2:\text{end}, 2:\text{end})$
+	\STATE $v_1$ = random $(m-1)\times(m-1)$ vector s.t. $\norm{v_1}=1$
+	\STATE QR factorize $B_1$ to get $Q_1$, $R_1$
+	\STATE Solve $Q_1y_1=v_1$ for $y_1$
+	\STATE Solve $R_1u_1=y_1$ for $u_1$
+	\STATE $\zeta_1=\langle v_1,u_1\rangle$
+	\WHILE {$\dfrac{\norm{u_1-\zeta}}{\norm{u_1}}\geq\epsilon$}
+		\STATE $v_1=u_1$ normalized
+		\STATE Solve $Q_1y_1=v_1$ for $y_1$
+		\STATE Solve $R_1u_1=y_1$ for $u_1$
+		\STATE $\zeta_1=\langle v_1,u_1\rangle$ 
+	\ENDWHILE
+	\STATE $\lambda_1=\dfrac1{\zeta_1}$
+\end{algorithmic}
+\end{algorithm}
+\begin{center}
+$\begin{array}{|c|c|c|}
+\hline
+\lambda_{\text{actual}} & \lambda_{\text{power}} & \lambda_{\text{inverse}} \\
+\hline
+6.1165 & 6.1152 & \text{N/A}\\
+-1.2866 & -1.2886 & \text{N/A}\\
+-0.1153 & \text{N/A} & -0.1154 \\
+-0.3441 & \text{N/A} & -0.3451\\
+\hline
+\end{array}$
+\end{center}
+When we were deflating the matrices, we found the first column of the matrix $B=HAH$ has non-zero elements in entries below the first one, and this makes the rigorousness our deflation process dubious. Even though the second eigenvalue turns out to be acceptible, we would expect the error the accumulate if we go on to deflate the matrix again. This can be avoided if we set a more stringent criterion for accepting the eigenvalue, say, with $\epsilon=1\times10^{-10}$. 
+\pagebreak
 \section{}
 \subsection{}
 Answer: the diagonal and first and second superdiagonal entries of $R$ are potentially non-zero, and $Q$ is tridiagonal. The explanation is the following:\\[0.3cm]

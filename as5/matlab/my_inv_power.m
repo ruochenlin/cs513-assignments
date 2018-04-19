@@ -1,3 +1,4 @@
+clear all;
 load as5_q3.mat
 epsilon = 1e-2;
 mu = 0;
@@ -12,12 +13,15 @@ if mu ~= 0
 end
 v = rand(m, 1);
 v = v / norm(v);
-u = A1 \ v;
+[Q, R] = qr(A1);
+y = Q \ v;
+u = R \ y;
 % zeta = 1 / (lambda - mu)
 zeta = v' * u;
 while norm(u-zeta*v) / norm(u) >= epsilon
 	v = u / norm(u);
-	u = A1 \ v;
+	y = Q \ v;
+	u = R \ y;
 	zeta = v' * u;
 end
 lambda = 1 / zeta + mu;
@@ -41,12 +45,15 @@ end
 % Carry our inverse iteration on B1
 v1 = rand(n, 1);
 v1 = v1 / norm(v1);
-u1 = B1 \ v1;
+[Q1, R1] = qr(B1);
+y1 = Q1 \ v1;
+u1 = R1 \ y1;
 % zeta = 1 / (lambda - mu)
 zeta_1 = v1' * u1;
 while norm(u1 - zeta_1 * v1) / norm(u1) >= epsilon
 	v1 = u1 / norm(u1);
-	u1 = B1 \ v1;
+	y1 = Q1 \ v1;
+	u1 = R1 \ y1;
 	zeta_1 = v1' * u1;
 end
 lambda_1 = 1 / zeta_1 + mu;
