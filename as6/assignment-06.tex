@@ -48,7 +48,28 @@ From Table 1 we can see that, if $\epsilon$ is small, GMRES could converge to th
 \end{tabular}
 \end{table}
 \end{center}
+\pagebreak
 
+\section{}
+If we define the first 2 columns of $U$ as $u$, then $uu^T$ is the projection matrix to $\text{range}(u)$, and $I-uu^T$ is the projection matrix to $\mathbb{R}^m\text{\textbackslash range}(u)$. In addition, we note that the two subspaces constitute a partition of $\mathbb{R}^m$. If $a_i$ denotes the columns of $A$, then the results in Table 2 shows that, as $k$ increases, the components of $a_i$ in $\text{range}(u)$ would increase accordingly, while the components in $\mathbb{R}^m\text{\textbackslash range}(u)$ remain relatively constant. This means that, as $k$ increases, the columns of $A$ can be more accurately approximated by linear combinations of the columns of $u$. 
+\begin{center}
+\begin{table}
+\caption{}
+\centering
+\begin{tabular}[t]{ | c | c c |}
+\hline
+$k$ & $\norm{uu^TA}_2$ & $\norm{(I-uu^T)A}_2$ \\[0.25cm]
+\hline
+ 1 & 2.09 & 4.25$\times10^1$\\ 
+ 10 & 4.43 & 1.37$\times10^2$\\
+ $10^2$ & 5.63 & 1.12$\times10^3$\\ 
+ $10^3$ & 5.74 & 1.10$\times10^4$\\ 
+ $10^4$ & 5.75 & 1.10$\times10^5$\\ 
+ $10^5$ & 5.75 & 1.10$\times10^6$\\
+ \hline
+\end{tabular}
+\end{table}
+\end{center}
 
 \end{document}
 
