@@ -19,7 +19,7 @@ function err = Q2(A, b, n)
 		S(:, i) = s;
 		S(i+1, i) = norm_v;
 		if i ~= n
-			Q(:, i+1) = v / S(i+1, i);
+			Q(:, i+1) = v / norm_v;
 		end
 	end
 	b_tilde = zeros(length(S), 1);

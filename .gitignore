@@ -1,18 +1,13 @@
 as0/
 as1/as01.aux
 as1/as01.log
-as1/as01.pdf
-as1/as1.pdf
 as1/matlab_code/
 as1/texput.log
 as2/as2.aux
 as2/as2.log
-as2/as2.pdf
 "as3/\\"
-as3/as3.pdf
 as3/assignment-03.aux
 as3/assignment-03.log
-as3/assignment-03.pdf
 as3/matlab/before_oh/
 as3/matlab/prob1.diary
 as3/matlab/prob2.png
@@ -26,7 +21,6 @@ as3/texput.log
 ref/
 as4/assignment-04.aux
 as4/assignment-04.log
-as4/assignment-04.pdf
 as4/matlab/symm_lu_2.m
 as4/Q2.m
 as4/matlab/A1.diary
@@ -51,4 +45,9 @@ as4/matlab/test.m
 as4/matlab/test2.m
 as4/pt2/assignment-04-pt2.aux
 as4/pt2/assignment-04-pt2.log
-as4/pt2/assignment-04-pt2.pdf
+as5/assignment-05.aux
+as5/assignment-05.log
+as5/matlab/as5_q3.mat
+as6/assignment-06.aux
+as6/assignment-06.log
+as6/matlab/prob3.dat
